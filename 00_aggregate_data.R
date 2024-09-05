@@ -25,8 +25,7 @@ custom_summary_function <- function(df) {
   df %>% 
     summarize(across(c(country,
                        city_size,
-                       salid1, 
-                       allDate,
+                       salid1,
                        year_month,
                        dow), first),
               across(c(deaths,
@@ -49,14 +48,13 @@ custom_summary_function <- function(df) {
 }
 
 # Read in data and create stratified summary
-# Each row represents a city-year-month-dow
+# Each row represents a city-year-month-day
 df <- data_files_1 %>% 
   map_dfr(\(x) {
     haven::read_sas(paste0(path_1, x)) %>% 
       add_year_month_dow() %>% 
-      group_by(year_month_dow) %>% 
-      custom_summary_function() %>% 
-      arrange(allDate)
+      group_by(allDate) %>% 
+      custom_summary_function()
   })
 
 # Save data
