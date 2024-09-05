@@ -13,9 +13,11 @@ data_files_1 <- list.files(path_1) %>%
 add_year_month_dow <- function(df) {
   df %>% 
     mutate(age_cat = factor(age_cat),
-           year_month_dow = paste(str_extract(allDate, "\\d\\d\\d\\d-\\d\\d"),
-                                  wday(allDate, label = TRUE),
-                                  sep = "-"))
+           year = str_extract(allDate, "\\d\\d\\d\\d"),
+           year_month = str_extract(allDate, "\\d\\d\\d\\d-\\d\\d"),
+           doy = yday(allDate),
+           dow = wday(allDate, label = TRUE),
+           year_month_dow = paste(year_month, dow, sep = "-"))
 }
 
 # Function to extract relevant data and aggregate deaths
@@ -24,7 +26,9 @@ custom_summary_function <- function(df) {
     summarize(across(c(country,
                        city_size,
                        salid1, 
-                       allDate), first),
+                       allDate,
+                       year_month,
+                       dow), first),
               across(c(deaths,
                        median_road_round,
                        median_vehicle_round, 
@@ -117,3 +121,4 @@ df_temp_cluster <- df_all %>%
 
 # Save data
 write_csv(df_temp_cluster, paste0(path_write, "final_temp_cluster_subgroup.csv"))
+
