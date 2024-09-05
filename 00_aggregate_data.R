@@ -18,7 +18,7 @@ add_year_month_dow <- function(df) {
                                   sep = "-"))
 }
 
-# Function to aggregate deaths and extract relevant data
+# Function to extract relevant data and aggregate deaths
 custom_summary_function <- function(df) {
   df %>% 
     summarize(across(c(country,
@@ -56,7 +56,7 @@ df <- data_files_1 %>%
   })
 
 # Save data
-path_write <- "C:/Users/dpw48/OneDrive - Drexel University/code/MS252-Derek/Data/"
+path_write <- "C:/Users/dpw48/OneDrive - Drexel University/git/MS252/Data/"
 write_rds(df, paste0(path_write, "combined_subgroup.rds"))
 
 # Read saved data
@@ -67,6 +67,7 @@ df <- read_rds(paste0(path_write, "combined_subgroup.rds"))
 # Path to data
 path_2 <- "//files.drexel.edu/colleges/SOPH/Shared/UHC/Projects/Wellcome_Trust/Manuscripts/MS252_Hsu/2024_01_03/"
 
+# Read and combine BEC data
 BEC1 <- read_csv(paste0(path_2, "BEC_L1AD_08162023.csv")) %>% 
   select(c('ISO2','SALID1','BECADSTTLGAVGL1AD','BECCZL1AD','BECADSTTDENSL1AD',
            'BECADLRDENSL1AD','BECADINTDENSL1AD','BECPTCHDENSL1AD','BECADINTDENS3L1AD',
@@ -84,7 +85,35 @@ BEC2 <- read_csv(paste0(path_2, "BEC_RESTRICTED_L1AD_08162023.csv")) %>%
 
 BEC <- inner_join(BEC1, BEC2, by = "SALID1")
 
+# Read SEC data
+SEC <- read_csv(paste0(path_2, 'SEC_INDEXSCORES_L1AD_07102023.csv')) %>% 
+  filter(YEAR == max(YEAR), .by = SALID1) %>% 
+  select(c('SALID1','CNSSEI_L1AD', 'CNSSE1_L1AD', 'CNSSE2_L1AD','CNSSE3_L1AD'))
+
+# Read REG data
+REG <- read_csv(paste0(path_2, 'VehicleRegistration_L1AD_20201027.csv')) %>% 
+  filter(YEAR == max(YEAR), .by = SALID1) %>% 
+  select(c('SALID1','BECMTRBRATEL1AD','BECPAVRATEL1AD','BECTOTVRRATEL1AD'))
+
+# Combine road mortality and city level modifier data
+df_all <- df %>% 
+  left_join(BEC, by = join_by(salid1 == SALID1)) %>% 
+  left_join(SEC, by = join_by(salid1 == SALID1)) %>% 
+  left_join(SEC, by = join_by(salid1 == SALID1))
+
+# Save data
+write_rds(df_all, paste0(path_write, "final_subgroup.csv"))
+
+# Read data
+df_all <- read_rds(paste0(path_write, "final_subgroup.csv"))
+
 # Temperature Cluster Data ------------------------------------------------
+path_3 <- "//files.drexel.edu/colleges/SOPH/Shared/UHC/Projects/Wellcome_Trust/Manuscripts/MS252_Hsu/2024_02_27/"
 
+temp_cluster <- haven::read_sas(paste0(path_3, "city_level_temp_w_clusters.sas7bdat"))
 
-d
+df_temp_cluster <- df_all %>% 
+  left_join(temp_cluster, by = join_by(salid1 == nsalid1))
+
+# Save data
+write_rds(paste0(path_write, "final_temp_cluster_subgroup.csv"))
