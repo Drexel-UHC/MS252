@@ -57,10 +57,10 @@ df <- data_files_1 %>%
 
 # Save data
 path_write <- "C:/Users/dpw48/OneDrive - Drexel University/git/MS252/Data/"
-write_rds(df, paste0(path_write, "combined_subgroup.rds"))
+write_csv(df, paste0(path_write, "combined_subgroup.csv"))
 
 # Read saved data
-df <- read_rds(paste0(path_write, "combined_subgroup.rds"))
+df <- read_csv(paste0(path_write, "combined_subgroup.csv"))
 
 
 # City Level Modifier Data ------------------------------------------------
@@ -102,10 +102,10 @@ df_all <- df %>%
   left_join(SEC, by = join_by(salid1 == SALID1))
 
 # Save data
-write_rds(df_all, paste0(path_write, "final_subgroup.csv"))
+write_csv(df_all, paste0(path_write, "final_subgroup.csv"))
 
 # Read data
-df_all <- read_rds(paste0(path_write, "final_subgroup.csv"))
+df_all <- read_csv(paste0(path_write, "final_subgroup.csv"))
 
 # Temperature Cluster Data ------------------------------------------------
 path_3 <- "//files.drexel.edu/colleges/SOPH/Shared/UHC/Projects/Wellcome_Trust/Manuscripts/MS252_Hsu/2024_02_27/"
@@ -116,4 +116,4 @@ df_temp_cluster <- df_all %>%
   left_join(temp_cluster, by = join_by(salid1 == nsalid1))
 
 # Save data
-write_rds(paste0(path_write, "final_temp_cluster_subgroup.csv"))
+write_csv(df_temp_cluster, paste0(path_write, "final_temp_cluster_subgroup.csv"))
