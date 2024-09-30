@@ -3,8 +3,10 @@ library(data.table)
 library(haven)
 library(lubridate)
 
+######This script turns the raw data (272 files, each representing a city with 100 imputations) in to 27200 files (each representing a city-imputation)
+
 # Define the directory and file pattern
-directory <- '/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS 252_all_imputed/Derived Data/'
+directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923/"
 file_pattern <- "^c(\\d+)\\.sas7bdat$"
 
 # Read city-level modifiers
@@ -22,7 +24,7 @@ BEC2 <- BEC2 %>%
 
 TEMP_cluster <- TEMP_cluster %>%
   rename(salid1 = nsalid1) %>%
-  select(salid1, cluster_ward_std_6, mean, std) ##忘記放mean跟std (Sep 10)
+  select(salid1, cluster_ward_std_6, mean, std) 
 
 # List all files in the specified directory with the specified pattern
 files <- list.files(path = directory, pattern = file_pattern, full.names = TRUE)
@@ -31,6 +33,8 @@ files <- list.files(path = directory, pattern = file_pattern, full.names = TRUE)
 half_point <- ceiling(length(files) / 2)
 first_half_files <- files[1:half_point]  # Process first half
 second_half_files <- files[(half_point + 1):length(files)]  # Uncomment for the second half
+
+manual_files <- files[(255):length(files)]
 
 # Define the subgroups and death types to summarize
 subgroups <- list(
@@ -55,7 +59,7 @@ summarize_by_group <- function(data, group_filter = NULL, death_var, result_name
 }
 
 # Loop through each file (city) in the first half
-for (file_path in second_half_files) { #replace "first_half_files" to "second_half_files" for second batch
+for (file_path in manual_files) { #replace "first_half_files" to "second_half_files" for second batch
   # Extract city identifier from the file name
   city_name <- sub("\\.sas7bdat$", "", basename(file_path))
   
@@ -129,7 +133,7 @@ for (file_path in second_half_files) { #replace "first_half_files" to "second_ha
       left_join(TEMP_cluster, by = "salid1")
     
     # Save the road-specific result to a CSV file
-    out_directory <- '/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS 252_all_imputed/Derived Data_processed/'
+    out_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923_processed"
     output_file_path <- file.path(out_directory, paste0(city_name, "_road", road_num, "_processed.csv"))
     fwrite(road_final_result, output_file_path)
     
@@ -148,39 +152,3 @@ for (file_path in second_half_files) { #replace "first_half_files" to "second_ha
   rm(data, constant_columns, varying_columns)
   gc()  # Garbage collection to free up memory
 }
-
-#################c102248####################
-# Define the directory where the CSV files are located
-csv_dir <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS 252_all_imputed/Derived Data_processed"  # Replace with the actual path to your CSV files
-
-# Get a list of all CSV files
-csv_files <- list.files(csv_dir, pattern = "^c102248.*\\.csv$", full.names = TRUE)
-
-# Loop through each CSV file
-for (file_path in csv_files) {
-  
-  # Read the CSV file
-  data <- fread(file_path)
-  
-  # Print the current file being processed
-  cat("Processing file:", basename(file_path), "\n")
-  
-  # Check if 'salid1' column exists and correct the value if necessary
-  if ("salid1" %in% colnames(data)) {
-    # Correct salid1 from 102247 to 102248
-    data[salid1 == 102247, salid1 := 102248]
-    cat("Corrected salid1 in file:", basename(file_path), "\n")
-  } else {
-    cat("No 'salid1' column found in file:", basename(file_path), "\n")
-  }
-  
-
-  # Write the corrected data back to the same CSV file (overwrite the file)
-  fwrite(data, file_path)
-  
-  # Optionally, you could write the corrected file to a new location
-  # fwrite(data, file.path("path/to/corrected/files", basename(file_path)))
-}
-
-
-

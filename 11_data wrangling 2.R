@@ -1,10 +1,13 @@
+######This script turns the 27200 files (each representing a city-imputation) into 100 files (each representing an imputation for 272 cities)
+
+
 ###########
 # Set the directory containing the CSV files
-data_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS 252_all_imputed/Derived Data_processed"
-output_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS 252_all_imputed/Derived Data_processed_by_imputation"
+data_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923_processed"
+output_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923_processed_by_imputation"
 
 # Generate a dynamic list of road types from "road1" to "road100"
-road_types <- paste0("road", 51:100)
+road_types <- paste0("road", 71:100)
 
 # List all files in the directory
 file_list <- list.files(path = data_directory, pattern = "\\.csv$", full.names = TRUE)
