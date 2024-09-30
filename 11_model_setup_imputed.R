@@ -69,6 +69,3 @@ apply_rubins_rule <- function(coef_list, vcov_list) {
   list(q_bar = q_bar,
        T_0 = T_0)
 }
-
-# Pool results given the list of 
-

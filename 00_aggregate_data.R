@@ -119,4 +119,3 @@ df_temp_cluster <- df_all %>%
 
 # Save data
 write_csv(df_temp_cluster, paste0(path_write, "final_temp_cluster_subgroup.csv"))
-

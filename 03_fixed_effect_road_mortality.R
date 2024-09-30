@@ -1,4 +1,4 @@
-source("01_load_data.R")
+#source("01_load_data.R")
 source("02_model_setup.R")
 
 # Keep all strata with nonzero number of road deaths
