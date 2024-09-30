@@ -33,7 +33,7 @@ fit_imputed <- 1:n_imp |>
          vcov = vcov(model_road),
          coef_red = coef(pred_road_reduced),
          vcov_red = vcov(pred_road_reduced))
-  }, .progress = TRUE)
+  })
 
 # Extract coefficients and covariance matrices
 coef_imputed <- map(fit_imputed, \(x) x$coef)
@@ -99,3 +99,58 @@ lines(pred_road_bar_red$predvar[ind2],pred_road_bar_red$RRfit[ind2],col=2,lwd=1.
 
 hist(data[[Temp_measure]], breaks = 100, probability = TRUE, col = "grey60",
      main = '', xlab = "Temperature (%tile)", ylab = "Probability Density", yaxt = "n", ylim=c(0,0.25))
+
+
+# Extra code --------------------------------------------------------------
+
+all <- fread(paste0(path_data, "final_temp_cluster_subgroup_", i, ".csv"))
+
+# Select all temperature clusters for analysis
+data <- all[cluster_ward_std_6 %in% temp_clusters]
+
+# Specify stratification scheme
+# stratify by city-year-month-dow
+data[, stratum:=factor(paste(salid1, year_month, dow, sep=":"))]
+
+# Keep all strata with nonzero number of road deaths
+data[,  keep:=sum(road)>0, by=stratum]
+
+# Fit model
+model_road <- gnm(road ~ cbt, eliminate = stratum, 
+                  family = quasipoisson(), data = data, subset=keep)
+
+# pred_road <- crosspred(cbt, model_road,
+#                        at = seq(minT, maxT, by = .1),
+#                        cen = medT, bylag = 1, cumul = TRUE, ci.level = 0.95)
+
+pred_road_reduced <- crossreduce(cbt, model_road,
+                                 at = seq(minT, maxT, by = .1),
+                                 cen = medT, bylag = 1, ci.level = 0.95)
+
+run_dlnm_i <- function(response = "road", i = 1) {
+  all <- fread(paste0(path_data, "final_temp_cluster_subgroup_", i, ".csv"))
+  
+  as.formula(paste0(response, "~ cbt"))
+  
+  # Select all temperature clusters for analysis
+  data <- all[cluster_ward_std_6 %in% temp_clusters]
+  
+  # Specify stratification scheme
+  # stratify by city-year-month-dow
+  data[, stratum:=factor(paste(salid1, year_month, dow, sep=":"))]
+  
+  # Keep all strata with nonzero number of road deaths
+  data[,  keep:=sum(road)>0, by=stratum]
+  
+  # Fit model
+  model_road <- gnm(road ~ cbt, eliminate = stratum, 
+                    family = quasipoisson(), data = data, subset=keep)
+  
+  # pred_road <- crosspred(cbt, model_road,
+  #                        at = seq(minT, maxT, by = .1),
+  #                        cen = medT, bylag = 1, cumul = TRUE, ci.level = 0.95)
+  
+  pred_road_reduced <- crossreduce(cbt, model_road,
+                                   at = seq(minT, maxT, by = .1),
+                                   cen = medT, bylag = 1, ci.level = 0.95)
+}
