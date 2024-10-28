@@ -1,11 +1,11 @@
 # Modeling (non-imputed; "original model")
-pred_road <- crosspred(cbt, model_road, cum=TRUE,cen=quan01, by=0.1)
+pred_road <- crosspred(cbt, model_road, cum=TRUE,cen=medT, by=0.1)
 
 coef = coef(pred_road)
 vcov = vcov(pred_road)
 
 # Modeling ("reduced original model")
-pred_road_reduce <- crossreduce(cbt, model_road,cen=quan01, by=0.1)
+pred_road_reduce <- crossreduce(cbt, model_road,cen=medT, by=0.1)
 coef_red = coef(pred_road_reduce)
 vcov_red = vcov(pred_road_reduce)
 
@@ -15,7 +15,7 @@ cbt_reduce <- crossbasis(data[[Temp_measure]], lag = 0, argvar = argvartmean, gr
 ## reconstruct with reduced coef
 pred_road_reconstruct <-  crosspred(cbt_reduce, model.link="log",
                                     coef = coef_red,
-                                    vcov = vcov_red,cen=quan01, by=0.1)
+                                    vcov = vcov_red,cen=medT, by=0.1)
 coef_red_reconstruct = coef(pred_road_reconstruct)
 vcov_red_reconstruct = vcov(pred_road_reconstruct)
 
@@ -24,21 +24,21 @@ vcov_red_reconstruct = vcov(pred_road_reconstruct)
 pred_road_reconstruct_pooled <- crosspred(cbt, model.link="log",
                                           coef = readRDS(paste0(path_for_pooled, "pooled_main_results_coef.rds")),
                                           vcov = readRDS(paste0(path_for_pooled, "pooled_main_results_vcov.rds")),
-                                         cum=TRUE,cen=quan01)
+                                         cum=TRUE,cen=medT)
 
 # Pooled Reduced-Reconstruct (from 03_imputed: use reduced coef/vcov from pooling 100 imputations)
-coef_red_pooled <- pooled_results_reduced$pooled_coef
-vcov_red_pooled <- pooled_results_reduced$pooled_vcov
-
 pred_road_red_pooled <- crosspred(cbt_reduce, model.link="log",
                                   coef = readRDS(paste0(path_for_pooled, "pooled_main_reduced_results_coef.rds")),
                                   vcov = readRDS(paste0(path_for_pooled, "pooled_main_reduced_results_vcov.rds")),
-                                          cen=quan01, by=0.1)
+                                          cen=medT, by=0.1)
+coef_red_pooled <- coef(pred_road_red_pooled)
+vcov_red_pooled <- vcov(pred_road_red_pooled)
+
 # Pooled Reconstruct (12 coefs) celcius
 pred_road_reconstruct_celcius_pooled <- crosspred(cbt, model.link="log",
                                           coef = readRDS(paste0(path_for_pooled, "pooled_main_celcius_results_coef.rds")),
                                           vcov = readRDS(paste0(path_for_pooled, "pooled_main_celcius_results_vcov.rds")),
-                                          cum=TRUE,cen=medT)
+                                          cum=TRUE,cen=medT_celcius)
 
 
 
@@ -59,7 +59,6 @@ plot(pred_road_reconstruct_pooled, "overall", lag=0, cumul=TRUE, ylim=c(0.95,1.2
 
 plot(pred_road_red_pooled, ylab="RR", col=col, ylim=c(0.95,1.2), lwd=1.5,ci='area',lty=1,
      xlab="Pooled (4 coef)", ci.arg=list(col=alpha(col, 0.3)))
-
 
 
 

@@ -187,47 +187,46 @@ saveRDS(pooled_results_celcius_reduced$pooled_vcov, file = paste0(path_for_poole
 
 
 # Reconstruction
+path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
 pred_road_reconstruct_pooled <- crosspred(cbt, model.link="log",
                                           coef = readRDS(paste0(path_for_pooled, "pooled_main_results_coef.rds")),
                                           vcov = readRDS(paste0(path_for_pooled, "pooled_main_results_vcov.rds")),
-                                          cum=TRUE,cen=minT,by=0.1)
+                                          cum=TRUE,cen=quan01,by=0.1)
 
 pred_road_reconstruct_celcius_pooled <- crosspred(cbt_celcius, model.link="log",
                                                   coef = readRDS(paste0(path_for_pooled, "pooled_main_celcius_results_coef.rds")),
                                                   vcov = readRDS(paste0(path_for_pooled, "pooled_main_celcius_results_vcov.rds")),
-                                                  cum=TRUE,cen=medT_celcius,by=0.1)
+                                                  cum=TRUE,cen=quan01_celcius,by=0.1)
 # Plotting
 col='gray'
 par(mfrow = c(2, 2))
 par(mar=c(4,5,1,0.5), las=1, mgp=c(2.5,1,0))
-plot(pred_road_reconstruct_pooled, "overall", lag=0, cumul=TRUE, ylim=c(0.9,1.3), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
+plot(pred_road_reconstruct_pooled, "overall", lag=0, cumul=TRUE, ylim=c(0.9,1.4), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
        xlab="Temperature (%tile) - pooled across 100 imputations", ci.arg=list(col=alpha(col, 0.3)))
-ind1 <- pred_road_reconstruct_pooled$predvar<=medT
-ind2 <- pred_road_reconstruct_pooled$predvar>=medT
-lines(pred_road_reconstruct_pooled$predvar[ind1],pred_road_reconstruct_pooled$allRRfit[ind1],col='steelblue4',lwd=1.5)
+#ind1 <- pred_road_reconstruct_pooled$predvar<=medT
+ind2 <- pred_road_reconstruct_pooled$predvar >= quan01 & pred_road_reconstruct_pooled$predvar <= quan99
+#lines(pred_road_reconstruct_pooled$predvar[ind1],pred_road_reconstruct_pooled$allRRfit[ind1],col='steelblue4',lwd=1.5)
 lines(pred_road_reconstruct_pooled$predvar[ind2],pred_road_reconstruct_pooled$allRRfit[ind2],col='firebrick3',lwd=1.5)    
 abline(v = c(quan01,quan25,medT,quan75,quan99), lty = 4, col = "gray")
 
-plot(pred_road_reconstruct_celcius_pooled, "overall", lag=0, cumul=TRUE, ylim=c(0.8,1.4), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
+plot(pred_road_reconstruct_celcius_pooled, "overall", lag=0, cumul=TRUE, ylim=c(0.9,1.4), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
        xlab="Temperature (°C) - pooled across 100 imputations", ci.arg=list(col=alpha(col, 0.3)))
-ind1 <- pred_road_reconstruct_celcius_pooled$predvar<=medT_celcius
-ind2 <- pred_road_reconstruct_celcius_pooled$predvar>=medT_celcius
-lines(pred_road_reconstruct_celcius_pooled$predvar[ind1],pred_road_reconstruct_celcius_pooled$allRRfit[ind1],col='steelblue4',lwd=1.5)
+#ind1 <- pred_road_reconstruct_celcius_pooled$predvar<=medT_celcius
+ind2 <- pred_road_reconstruct_celcius_pooled$predvar >= quan01_celcius & pred_road_reconstruct_celcius_pooled$predvar <= quan99_celcius
+#lines(pred_road_reconstruct_celcius_pooled$predvar[ind1],pred_road_reconstruct_celcius_pooled$allRRfit[ind1],col='steelblue4',lwd=1.5)
 lines(pred_road_reconstruct_celcius_pooled$predvar[ind2],pred_road_reconstruct_celcius_pooled$allRRfit[ind2],col='firebrick3',lwd=1.5)    
 abline(v = c(quan01_celcius,quan25_celcius,medT_celcius,quan75_celcius,quan99_celcius), lty = 4, col = "gray")
 
-plot(pred_road, "overall", lag=0, cumul=TRUE, ylim=c(0.9,1.3), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
+plot(pred_road, "overall", lag=0, cumul=TRUE, ylim=c(0.9,1.4), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
      xlab="Temperature (%tile) - median of 100 imputations", ci.arg=list(col=alpha(col, 0.3)))
-ind1 <- pred_road_reconstruct_pooled$predvar<=medT
-ind2 <- pred_road_reconstruct_pooled$predvar>=medT
-lines(pred_road_reconstruct_pooled$predvar[ind1],pred_road_reconstruct_pooled$allRRfit[ind1],col='steelblue4',lwd=1.5)
-lines(pred_road_reconstruct_pooled$predvar[ind2],pred_road_reconstruct_pooled$allRRfit[ind2],col='firebrick3',lwd=1.5)    
+#ind1 <- pred_road$predvar>=quan01
+ind2 <- pred_road$predvar >= quan01 & pred_road$predvar <= quan99
+#lines(pred_road$predvar[ind1],pred_road$allRRfit[ind1],col='steelblue4',lwd=1.5)
+lines(pred_road$predvar[ind2],pred_road$allRRfit[ind2],col='firebrick3',lwd=1.5)    
 abline(v = c(quan01,quan25,medT,quan75,quan99), lty = 4, col = "gray")
 
 hist(data[['L1ADtemp_pw']], breaks = 100, probability = TRUE, col = "grey60", main = '', xlab = "Temperature (°C)", ylab = "Probability Density", yaxt = "n", ylim=c(0,0.15))
+abline(v = c(quan01_celcius,quan25_celcius,medT_celcius,quan75_celcius,quan99_celcius), lty = 4, col = "gray")
 
 
 
-pred_road_reconstruct_pooled$allRRfit[951]
-pred_road_reconstruct_pooled$allRRlow[951]
-pred_road_reconstruct_pooled$allRRhigh[951]

@@ -1,7 +1,17 @@
-library(dplyr)
-library(data.table)
 library(haven)
 library(lubridate)
+library(RColorBrewer)
+library(tsModel)
+library(data.table) # HANDLE LARGE DATASETS
+library(dlnm) ; library(gnm) ; library(splines) # MODELLING TOOLS
+library(sf) ; library(terra) # HANDLE SPATIAL DATA
+library(exactextractr) # FAST EXTRACTION OF AREA-WEIGHTED RASTER CELLS
+library(dplyr) ; library(tidyr) # DATA MANAGEMENT TOOLS
+library(ggplot2) ; library(patchwork) # PLOTTING TOOLS
+library(stargazer)
+library(broom)
+library("tidyverse")
+library("lubridate")
 
 ######This script turns the raw data (272 files, each representing a city with 100 imputations) in to 27200 files (each representing a city-imputation)
 

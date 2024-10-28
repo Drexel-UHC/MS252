@@ -131,6 +131,7 @@ for (age_group in age_groups) {
 
 
 # Reconstruction
+age_groups <- c("age1", "age2", "age3", "age4", "age5")
 pred_pooled_list <- setNames(lapply(age_groups, function(age_group) {
   crosspred(cbt, model.link = "log",
             coef = readRDS(paste0(path_for_pooled, "pooled_", age_group, "_results_coef.rds")),

@@ -116,6 +116,7 @@ for (mode in modes) {
 
 
 # Reconstruction
+modes <- c("vehicle", "motorcycle", "bicycle", "ped")
 pred_pooled_list <- setNames(lapply(modes, function(mode) {
   crosspred(cbt, model.link = "log",
             coef = readRDS(paste0(path_for_pooled, "pooled_", mode, "_results_coef.rds")),

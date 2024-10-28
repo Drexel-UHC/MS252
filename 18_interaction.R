@@ -105,6 +105,8 @@ pred_int1_pooled <- crosspred(cbt, model.link="log", coef = coef_int1_pooled,vco
 pred_int2_pooled <- crosspred(cbt, model.link="log",coef = coef_int2_pooled, vcov = vcov_int2_pooled, cum=TRUE, cen=quan01, by=0.1)
 
 ### unimputed model for mode subgroup
+data[, year := as.numeric(format(as.Date(allDate), "%Y"))]
+modifier <- 'mean' #change to other modifiers in c("mean", "std", "BECADSTTLGAVGL1AD", "BECURBAVGTRAFTIMEL1AD")
 intval <- quantile(data[[modifier]], c(0.10, 0.90))
 cbint1 <- cbt * (data[[modifier]] - intval[1])
 cbint2 <- cbt * (data[[modifier]] - intval[2])

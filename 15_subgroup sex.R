@@ -125,12 +125,3 @@ lines(pred_female, "overall", lag=0, cumul=TRUE, ci="bars",col=col[2], lty=2,
 
 legend("topleft", c("male","female"), lty=2, lwd=1, col=col,
        bty="n", inset=0, y.intersp=0.8, cex=1.0)
-
-
-pred_male_pooled$allRRfit[951]
-pred_male_pooled$allRRlow[951]
-pred_male_pooled$allRRhigh[951]
-
-pred_female_pooled$allRRfit[951]
-pred_female_pooled$allRRlow[951]
-pred_female_pooled$allRRhigh[951]

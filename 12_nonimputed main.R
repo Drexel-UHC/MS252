@@ -1,23 +1,3 @@
-library(haven)     # For reading .sas7bdat files
-library(dplyr)     # For data manipulation
-library(lubridate) # For date manipulation
-library(dlnm)
-library(splines)
-library(RColorBrewer)
-library(tsModel)
-library(data.table) # HANDLE LARGE DATASETS
-library(dlnm) ; library(gnm) ; library(splines) # MODELLING TOOLS
-library(sf) ; library(terra) # HANDLE SPATIAL DATA
-library(exactextractr) # FAST EXTRACTION OF AREA-WEIGHTED RASTER CELLS
-library(dplyr) ; library(tidyr) # DATA MANAGEMENT TOOLS
-library(ggplot2) ; library(patchwork) # PLOTTING TOOLS
-library(gnm)
-library(stargazer)
-library(broom)
-#########################################Derek's 00_aggregate_data.R###########################################################
-library("tidyverse")
-library("lubridate")
-
 # City Road Mortality Data ------------------------------------------------
 # Path to data
 path_1 <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/Non-imputed/Prelim Derived Data_20240920/"
@@ -137,13 +117,6 @@ df_temp_cluster <- df_all %>%
 # Save data
 #write_csv(df_temp_cluster, paste0(path_write, "final_temp_cluster_subgroup.csv"))
 ##################################################
-fqaic <- function(model) {
-  loglik <- sum(dpois(model$y,model$fitted.values,log=TRUE))
-  phi <- summary(model)$dispersion
-  qaic <- -2*loglik + 2*summary(model)$df[3]*phi
-  return(qaic)
-}
-
 non_imputed <- read.csv("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/Non-imputed/final_temp_cluster_subgroup.csv")
 non_imputed <- as.data.table(non_imputed)
 summary(non_imputed)
@@ -187,29 +160,6 @@ cbt_celcius <- crossbasis(data[[Temp_measure_celcius]], lag = 2, argvar = argvar
 model_road_celcius <- gnm(median_road_round ~ cbt_celcius, eliminate = stratum, 
                   family = quasipoisson(), data = data, subset=keep)
 
-pred_road <- crosspred(cbt, model_road, cum=TRUE, cen=medT)
-pred_road_celcius <- crosspred(cbt_celcius, model_road_celcius, cum=TRUE, cen=medT_celcius)
+pred_road <- crosspred(cbt, model_road, cum=TRUE, cen=quan01, by=0.1)
+pred_road_celcius <- crosspred(cbt_celcius, model_road_celcius, cum=TRUE, cen=quan01_celcius)
 
-
-# Plotting
-col='gray'
-par(mfrow = c(1, 2))
-par(mar=c(4,5,1,0.5), las=1, mgp=c(2.5,1,0))
-plot(pred_road, "overall", lag=0, cumul=TRUE, ylim=c(0.9,1.3), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
-       xlab="Temperature (%tile) - pooled across 100 imputations", ci.arg=list(col=alpha(col, 0.3)))
-ind1 <- pred_road$predvar<=medT
-ind2 <- pred_road$predvar>=medT
-lines(pred_road$predvar[ind1],pred_road$allRRfit[ind1],col=4,lwd=1.5)
-lines(pred_road$predvar[ind2],pred_road$allRRfit[ind2],col=2,lwd=1.5)    
-abline(v = c(quan01,quan25,medT,quan75,quan99), lty = 4, col = "gray")
-  
-plot(pred_road_celcius, "overall", lag=0, cumul=TRUE, ylim=c(0.8,1.4), ylab="RR", col=col, lwd=1.5,ci='area',lty=1,
-       xlab="Temperature (°C) - pooled across 100 imputations", ci.arg=list(col=alpha(col, 0.3)))
-ind1 <- pred_road_celcius$predvar<=medT_celcius
-ind2 <- pred_road_celcius$predvar>=medT_celcius
-lines(pred_road_celcius$predvar[ind1],pred_road_celcius$allRRfit[ind1],col=4,lwd=1.5)
-lines(pred_road_celcius$predvar[ind2],pred_road_celcius$allRRfit[ind2],col=2,lwd=1.5)    
-abline(v = c(quan01_celcius,quan25_celcius,medT_celcius,quan75_celcius,quan99_celcius), lty = 4, col = "gray")
-  
-
-summary(data)
