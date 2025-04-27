@@ -45,11 +45,11 @@ library(tidyverse)
 # Step 1: Read in supporting city-level data
 #---------------------------------------------
 # Define directory and filename pattern
-directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923/"
+directory <- "/Volumes/TOSHIBA Kai/MS252/Derived Data_20240923"
 file_pattern <- "^c(\\d+)\\.sas7bdat$"
 
 # Read city-level modifier datasets
-BEC1 <- fread("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252 requested data/BEC_L1AD_08162023.csv") %>%
+BEC1 <- fread("/Volumes/TOSHIBA Kai/MS252/MS252 requested data/BEC_L1AD_08162023.csv") %>%
   rename(salid1 = SALID1) %>%
   select(
     salid1, BECADSTTLGAVGL1AD, BECCZL1AD, BECADSTTDENSL1AD, BECADLRDENSL1AD, BECADINTDENSL1AD, BECPTCHDENSL1AD,
@@ -60,11 +60,11 @@ BEC1 <- fread("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/
     BECSLOPEMINL1AD, BECSLOPEP25L1AD, BECSLOPEP75L1AD, BECSLOPESTDL1AD
   )
 
-BEC2 <- fread("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252 requested data/BEC_RESTRICTED_L1AD_08162023.csv") %>%
+BEC2 <- fread("/Volumes/TOSHIBA Kai/MS252/MS252 requested data/BEC_RESTRICTED_L1AD_08162023.csv") %>%
   rename(salid1 = SALID1) %>%
   select(salid1, BECURBTRVDELAYINDEXL1AD, BECURBAVGTRAFTIMEL1AD, BECURBTRVDELAYTIMEL1AD, BECPARKPCTAREAL1AD)
 
-TEMP_cluster <- read_sas("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/city_level_temp_w_clusters.sas7bdat") %>%
+TEMP_cluster <- read_sas("/Volumes/TOSHIBA Kai/MS252/city_level_temp_w_clusters.sas7bdat") %>%
   rename(salid1 = nsalid1) %>%
   select(salid1, cluster_ward_std_6, mean, std)
 
@@ -148,8 +148,8 @@ for (file_path in manual_files) {  # Replace with second_half_files if needed
       mutate(
         allDate = as.Date(allDate),
         year = year(allDate),
-        month = month(allDate, label = TRUE),
-        dow = wday(allDate, label = TRUE),
+        month = lubridate::month(allDate, label = TRUE),
+        dow = lubridate::wday(allDate, label = TRUE),
         year_month = paste0(year, "-", month),
         year_month_dow = paste0(year, "-", month, "-", dow),
         day_of_year = yday(allDate)
@@ -173,7 +173,7 @@ for (file_path in manual_files) {  # Replace with second_half_files if needed
       left_join(TEMP_cluster, by = "salid1")
     
     # Export CSV
-    out_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923_processed_20250407"
+    out_directory <- "/Volumes/TOSHIBA Kai/MS252/Derived Data_20240923_processed"
     output_file_path <- file.path(out_directory, paste0(city_name, "_road", road_num, "_processed.csv"))
     fwrite(road_final_result, output_file_path)
     
