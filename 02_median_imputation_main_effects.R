@@ -27,10 +27,10 @@ library(dlnm)
 library(gnm)
 
 # 1. Paths to Data ----------------------------------------------------------
-path_1 <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/Median-imputed/Prelim Derived Data_20240920/"
-path_write <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/Median-imputed/"
-path_2 <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252 requested data/"
-path_3 <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/"
+path_1 <- "/Volumes/TOSHIBA Kai/MS252/Median-imputed/Prelim Derived Data_20240920/"
+path_write <- "/Volumes/TOSHIBA Kai/MS252/Median-imputed/"
+path_2 <- "/Volumes/TOSHIBA Kai/MS252/MS252 requested data/"
+path_3 <- "/Volumes/TOSHIBA Kai/MS252"
 
 # 2. Helper Functions -------------------------------------------------------
 
@@ -120,10 +120,15 @@ df_temp_cluster <- df_all %>%
 # write_csv(df_temp_cluster, file.path(path_write, "final_temp_cluster_subgroup.csv"))
 
 # 6. Load Final Dataset -----------------------------------------------------
-non_imputed <- fread(file.path(path_write, "final_temp_cluster_subgroup.csv"))
+median_imputed <- fread(file.path(path_write, "final_temp_cluster_subgroup.csv"))
+
+median_imputed <- median_imputed %>%
+  mutate(year = lubridate::year(as.Date(allDate))) %>%
+  filter(!(salid1 == 204106 & year >= 2011 & year <= 2020))
 
 # Exclude 2020 and prepare strata
-data <- non_imputed %>% filter(!grepl("^2020", year_month)) %>% as.data.table()
+data <- median_imputed %>% filter(!grepl("^2020", year_month)) %>% as.data.table()
+rm(median_imputed)
 data[, stratum := factor(paste(salid1, year_month, dow, sep = ":"))]
 data[, keep := sum(median_road_round) > 0, by = stratum]
 
