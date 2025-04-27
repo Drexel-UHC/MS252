@@ -40,6 +40,7 @@ library(rnaturalearthdata)
 library(grid)
 
 # 1. Summary statistics across all cities ----------------------------------
+nrow(data)
 summary_stats <- data %>%
   group_by(salid1) %>%
   summarise(
@@ -72,7 +73,10 @@ summary_long <- summary_across_rows %>%
 summary_wide <- summary_long %>%
   pivot_wider(names_from = statistic, values_from = value)
 
-print(summary_wide)
+summary_wide_formatted <- summary_wide %>%
+  mutate(across(where(is.numeric), ~ sprintf("%.2f", .)))
+
+print(summary_wide_formatted)
 
 # 2. Descriptives by city --------------------------------------------------
 descriptive <- data[, .(country, salid1, year_month, median_road_round, L1ADtemp_pw)]
@@ -115,7 +119,7 @@ city_summary <- merged[, .(
 
 
 # 3. Spatial mapping --------------------------------------------------------
-l1ad <- st_read("../../Data/MS252 requested data/ForSALURBALCEC20240927.gdb", layer = "SALURBAL_L1AD")
+l1ad <- st_read("/Volumes/TOSHIBA Kai/MS252/MS252 requested data/ForSALURBALCEC20240927.gdb", layer = "SALURBAL_L1AD")
 l1ad$SALID1 <- as.character(l1ad$SALID1)
 city_summary[, salid1 := as.character(salid1)]
 
@@ -128,22 +132,35 @@ countries_wgs <- st_transform(countries_proj, 4326)
 bbox <- st_bbox(l1ad_points_wgs)
 
 # Mortality map
+png("/Volumes/TOSHIBA Kai/MS252/Figures/figs1b.png", width = 6, height = 8, units = "in", res = 300)  
+
 ggplot() +
   geom_sf(data = countries_wgs, fill = "gray90", color = "gray20", size = 0.3) +
   geom_sf(data = l1ad_points_wgs, aes(color = median_mort_rate), size = 1, stroke = 1) +
   scale_color_viridis_c(option = "B", name = "Mortality Rate\n(per 100k)") +
   coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]),
            ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE, datum = NA) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    legend.position = c(0.1, 0.1),  
+    legend.justification = c(0, 0)  
+  )
+dev.off()
 
 # Temperature map
+png("/Volumes/TOSHIBA Kai/MS252/Figures/figs1a.png", width = 6, height = 8, units = "in", res = 300)  
 ggplot() +
   geom_sf(data = countries_wgs, fill = "gray90", color = "gray20", size = 0.3) +
   geom_sf(data = l1ad_points_wgs, aes(color = median_temp), size = 1, stroke = 1) +
   scale_color_viridis_c(option = "B", name = "Mean Temp\n(\u00b0C)") +
   coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]),
            ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE, datum = NA) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    legend.position = c(0.1, 0.1),  
+    legend.justification = c(0, 0))
+
+dev.off()
 
 # 4. Descriptives by Country -----------------------------------------------
 descriptive <- data[, .(country, salid1, year_month, median_road_round, L1ADtemp_pw)]
@@ -167,23 +184,23 @@ merged <- merge(merged, unique(descriptive[, .(salid1, country)]), by = "salid1"
 merged[, country := fifelse(country %in% c("CR", "SV", "PA"), "Central America", country)]
 
 country_summary <- merged[, .(
-  median_deaths = median(annual_deaths, na.rm = TRUE),
-  p10_deaths = quantile(annual_deaths, 0.10, na.rm = TRUE),
-  p90_deaths = quantile(annual_deaths, 0.90, na.rm = TRUE),
-  median_temp = median(annual_temp, na.rm = TRUE),
-  p10_temp = quantile(annual_temp, 0.10, na.rm = TRUE),
-  p90_temp = quantile(annual_temp, 0.90, na.rm = TRUE),
-  median_pop_1k = median(population, na.rm = TRUE) / 1e3,
-  p10_pop_1k = quantile(population, 0.10, na.rm = TRUE) / 1e3,
-  p90_pop_1k = quantile(population, 0.90, na.rm = TRUE) / 1e3,
-  count = uniqueN(salid1)
-), by = country]
+  median_deaths   = as.numeric(median(annual_deaths, na.rm = TRUE)),
+  p10_deaths      = as.numeric(quantile(annual_deaths, 0.10, na.rm = TRUE)),
+  p90_deaths      = as.numeric(quantile(annual_deaths, 0.90, na.rm = TRUE)),
+  median_temp     = as.numeric(median(annual_temp, na.rm = TRUE)),
+  p10_temp        = as.numeric(quantile(annual_temp, 0.10, na.rm = TRUE)),
+  p90_temp        = as.numeric(quantile(annual_temp, 0.90, na.rm = TRUE)),
+  median_pop_1k   = as.numeric(median(population, na.rm = TRUE)) / 1e3,
+  p10_pop_1k      = as.numeric(quantile(population, 0.10, na.rm = TRUE)) / 1e3,
+  p90_pop_1k      = as.numeric(quantile(population, 0.90, na.rm = TRUE)) / 1e3,
+  count           = as.numeric(uniqueN(salid1))
+  ), by = country]
 
 country_table <- country_summary[, .(
   Country = country,
-  Deaths = sprintf("%d (%.1f, %.1f)", round(median_deaths), p10_deaths, p90_deaths),
-  Temp_C = sprintf("%.2f (%.2f, %.2f)", median_temp, p10_temp, p90_temp),
-  Population_1k = sprintf("%d (%d, %d)", round(median_pop_1k), round(p10_pop_1k), round(p90_pop_1k)),
+  Deaths = sprintf("%.1f (%.1f, %.1f)", median_deaths, p10_deaths, p90_deaths),
+  Temp_C = sprintf("%.1f (%.1f, %.1f)", median_temp, p10_temp, p90_temp),
+  Population_1k = sprintf("%.1f (%.1f, %.1f)", median_pop_1k, p10_pop_1k, p90_pop_1k),
   Cities = count
 )]
 
