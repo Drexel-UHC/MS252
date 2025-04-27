@@ -22,7 +22,7 @@
 # Author: Cheng-Kai Hsu
 # Date: April 2025
 ################################################################################
-### Non-imputed model for mode subgroup
+### Median-imputed model for mode subgroup
 data[,  keep_vehicle:=sum(median_vehicle_round)>0, by=stratum]
 model_vehicle <- gnm(median_vehicle_round ~ cbt, eliminate = stratum, 
                      family = quasipoisson(), data = data, subset=keep_vehicle)
@@ -123,7 +123,8 @@ results_mode <- lapply(road_files, analyze_road_data_mode)
 
 # Define mode groups and result file suffixes
 modes <- c("vehicle", "motorcycle", "bicycle", "ped")
-path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
+
 # Extract coefficients and variance-covariance matrices for all mode groups
 coef_list <- setNames(lapply(modes, function(mode) lapply(results_mode, function(x) x[[paste0("coef_", mode)]])), modes)
 vcov_list <- setNames(lapply(modes, function(mode) lapply(results_mode, function(x) x[[paste0("vcov_", mode)]])), modes)
