@@ -1,5 +1,5 @@
 ################################################################################################################################################################
-# png("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Submission-LTPH/figa2.png", width = 6, height = 3, units = "in", res = 300)  # 8x8 inches, 300 DPI
+png("/Volumes/TOSHIBA Kai/MS252/Figures/figs3.png", width = 6, height = 3, units = "in", res = 300)  # 8x8 inches, 300 DPI
 
 # Reconstruction by modifier
 modifier = 'mean' #mean #std #BECADSTTLGAVGL1AD #BECURBAVGTRAFTIMEL1AD
@@ -48,10 +48,10 @@ abline(v = c(quan01,quan25,medT,quan75,quan99), lty = 4, col = "gray")
 legend("topleft", c("lower","higher"), lty=1, lwd=1, col=col,
        bty="n", inset=0.01, y.intersp=0.9, cex=1.0)
 mtext("b", side = 3, adj = 0.5, line = 0.5, cex = 1.2)
-# dev.off()
+dev.off()
 ################################################################################################################################################################
 ################################################################################################################
-# png("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Submission-LTPH/fig4.png", width = 6, height = 3, units = "in", res = 300)  # 8x8 inches, 300 DPI
+png("/Volumes/TOSHIBA Kai/MS252/Figures/fig4.png", width = 6, height = 3, units = "in", res = 300)  # 8x8 inches, 300 DPI
 # Reconstruction by modifier
 modifier = 'BECADSTTLGAVGL1AD' #mean #std #BECADSTTLGAVGL1AD #BECURBAVGTRAFTIMEL1AD
 coef_int1_pooled <- readRDS(paste0(path_for_pooled, "pooled_int1_", modifier, "_results_coef.rds"))
