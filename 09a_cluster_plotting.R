@@ -13,7 +13,7 @@ plot_data <- data %>%
   mutate(cluster = factor(cluster, levels = cluster_order, labels = cluster_labels)) # Adjust the levels to match the desired order
 
 ################################################################################################################
-# png("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Submission-LTPH/fig2a.png", width = 5, height = 6.5, units = "in", res = 300)  # 8x8 inches, 300 DPI
+png("/Volumes/TOSHIBA Kai/MS252/Figures/fig2a.png", width = 5, height = 6.5, units = "in", res = 300)  # 8x8 inches, 300 DPI
 
 # Create ggplot2 visualization
 ggplot(plot_data, aes(x = L1ADtemp_pw, color = cluster)) +
@@ -40,7 +40,8 @@ ggplot(plot_data, aes(x = L1ADtemp_pw, color = cluster)) +
     panel.border = element_rect(color = "black", fill = NA)  # Add a border if needed
   ) 
 
-# dev.off()
+dev.off()
+
 ################################################################################################################
 plot_data[, .(
   mean_value = mean(L1ADtemp_pw, na.rm = TRUE),            # Mean
@@ -50,7 +51,7 @@ plot_data[, .(
 
 
 
-# png("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Submission-LTPH/fig2b-g.png", width = 6, height = 3.8, units = "in", res = 300)  # 8x8 inches, 300 DPI
+png("/Volumes/TOSHIBA Kai/MS252/Figures/fig2b-g.png", width = 6, height = 3.8, units = "in", res = 300)  # 8x8 inches, 300 DPI
 
 # Set up the plotting area for base R (2 rows and 3 columns)
 par(mfrow = c(2, 3), mar = c(5, 5, 2, 1), las = 1.5, mgp = c(3.8, 1.2, 0))
@@ -76,11 +77,14 @@ for (i in rev(c(seq_along(cluster_order)))) {
   mtext(letters[8-i], side = 3.2, line = 0.5, adj = -0.45, cex = 1.3)
 }
 
-# dev.off()
+dev.off()
 # 
-pred_reconstruct_pooled[[3]]$allRRfit[991]
-pred_reconstruct_pooled[[3]]$allRRlow[991]
-pred_reconstruct_pooled[[3]]$allRRhigh[991]
+pred_reconstruct_pooled[[1]]$allRRfit[951]
+pred_reconstruct_pooled[[1]]$allRRlow[951]
+pred_reconstruct_pooled[[1]]$allRRhigh[951]
+pred_reconstruct_pooled[[1]]$allRRfit[991]
+pred_reconstruct_pooled[[1]]$allRRlow[991]
+pred_reconstruct_pooled[[1]]$allRRhigh[991]
 
 # 1) mild N=21; 2) warm/con, N=82; 3) hot/con N=103; 4) warm/dis N=30; 5) hot/dis N=19; 6) cool N=17
 
