@@ -16,7 +16,7 @@
 # Date: April 2025
 ################################################################################
 
-# --- Non-imputed (median) models by age group ----------------------------------
+# --- Median-imputed models by age group ----------------------------------
 data[,  keep_age1 := sum(deaths_under_9) > 0, by = stratum]
 model_age1 <- gnm(deaths_under_9 ~ cbt, eliminate = stratum, 
                   family = quasipoisson(), data = data, subset = keep_age1)
@@ -76,7 +76,7 @@ analyze_road_data_age <- function(file_name) {
 # --- Apply function to imputed files and extract results ------------------------
 results_age <- lapply(road_files, analyze_road_data_age)
 age_groups <- paste0("age", 1:5)
-
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
 # Extract and pool results using Rubin's rule
 for (age in age_groups) {
   coef_list <- lapply(results_age, function(x) x[[age]]$coef)
@@ -126,7 +126,18 @@ legend("topleft", c("<=9", "10-19", "20-34", "35-64", ">=65"),
        col = col, lty = 2, lwd = 2, bty = "n", cex = 1)
 
 
-
+pred_pooled_list$age1$allRRfit[991]
+pred_pooled_list$age1$allRRlow[991]
+pred_pooled_list$age1$allRRhigh[991]
+pred_pooled_list$age2$allRRfit[991]
+pred_pooled_list$age2$allRRlow[991]
+pred_pooled_list$age2$allRRhigh[991]
+pred_pooled_list$age3$allRRfit[991]
+pred_pooled_list$age3$allRRlow[991]
+pred_pooled_list$age3$allRRhigh[991]
+pred_pooled_list$age4$allRRfit[991]
+pred_pooled_list$age4$allRRlow[991]
+pred_pooled_list$age4$allRRhigh[991]
 pred_pooled_list$age5$allRRfit[991]
 pred_pooled_list$age5$allRRlow[991]
 pred_pooled_list$age5$allRRhigh[991]
