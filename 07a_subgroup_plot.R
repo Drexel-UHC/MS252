@@ -9,7 +9,7 @@
 # Date: April 2025
 ################################################################################
 
-path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
 
 # Reconstruction
 pred_male_pooled <- crosspred(cbt, model.link="log",
@@ -24,7 +24,7 @@ pred_female_pooled <- crosspred(cbt, model.link="log",
 
 
 ############################################################################################################################################
-# png("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Submission-LTPH/fig3.png", width = 7, height = 2.5, units = "in", res = 300)  # 8x8 inches, 300 DPI
+png("/Volumes/TOSHIBA Kai/MS252/Figures/fig3.png", width = 7, height = 2.5, units = "in", res = 300)  # 8x8 inches, 300 DPI
 
 # Plotting
 par(mfrow = c(1, 3))
