@@ -22,12 +22,12 @@
 #---------------------------------------------
 # Step 1: Define directories and road types
 #---------------------------------------------
-data_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923_processed"
-output_directory <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923_processed_by_imputation"
+data_directory <- "/Volumes/TOSHIBA Kai/MS252/Derived Data_20240923_processed"
+output_directory <- "/Volumes/TOSHIBA Kai/MS252/Derived Data_20240923_processed_by_imputation"
 
 # Define which imputations to process (adjust range as needed)
 # Generate a dynamic list of road types e.g., from "road1" to "road100"
-road_types <- paste0("road", 0:1)
+road_types <- paste0("road", 21:100)
 
 #---------------------------------------------
 # Step 2: List all available CSV files
