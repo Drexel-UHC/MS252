@@ -27,6 +27,8 @@ library(dplyr)
 library(scales)      # For alpha transparency in plots
 library(ggplot2)
 library(mice)        # For Rubin's rule logic
+library(parallel)
+n_cores <- detectCores() - 1
 
 # check if road1-road100 have same dimensions and have 272 salid1
 
@@ -35,7 +37,7 @@ library(mice)        # For Rubin's rule logic
 road_files <- paste0("road", 1:100, ".csv")  # Adjust this as needed for your specific files
 
 # Define the base directory path
-base_path <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Derived Data_20240923_processed_by_imputation/"
+base_path <- "/Volumes/TOSHIBA Kai/MS252/Derived Data_20240923_processed_by_imputation/"
 
 
 # Function to perform analysis on each file
@@ -174,8 +176,8 @@ apply_rubin_rule <- function(coef_list, vcov_list) {
 
 
 # Loop through all files, run the analysis, and store coefficients and variance-covariance matrices in lists
-results <- lapply(road_files, analyze_road_data)
-results_celcius <- lapply(road_files, analyze_road_data_celcius)
+results <- mclapply(road_files, analyze_road_data, mc.cores = n_cores)
+results_celcius <- mclapply(road_files, analyze_road_data_celcius, mc.cores = n_cores)
 
 # Combine all coefficients and variance-covariance matrices into lists
 coef_list <- lapply(results, function(x) x$coef)
@@ -197,7 +199,7 @@ pooled_results_celcius <- apply_rubin_rule(coef_list_celcius, vcov_list_celcius)
 pooled_results_celcius_reduced <- apply_rubin_rule(coef_list_celcius_reduced, vcov_list_celcius_reduced)
 
 # Save as RDS
-path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
 saveRDS(pooled_results$pooled_coef, file = paste0(path_for_pooled, "pooled_main_results_coef.rds"))
 saveRDS(pooled_results$pooled_vcov, file = paste0(path_for_pooled, "pooled_main_results_vcov.rds"))
 saveRDS(pooled_results_reduced$pooled_coef, file = paste0(path_for_pooled, "pooled_main_reduced_results_coef.rds"))
@@ -209,7 +211,7 @@ saveRDS(pooled_results_celcius_reduced$pooled_vcov, file = paste0(path_for_poole
 
 
 # Reconstruction
-path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
 pred_road_reconstruct_pooled <- crosspred(cbt, model.link="log",
                                           coef = readRDS(paste0(path_for_pooled, "pooled_main_results_coef.rds")),
                                           vcov = readRDS(paste0(path_for_pooled, "pooled_main_results_vcov.rds")),
@@ -220,9 +222,9 @@ pred_road_reconstruct_celcius_pooled <- crosspred(cbt_celcius, model.link="log",
                                                   vcov = readRDS(paste0(path_for_pooled, "pooled_main_celcius_results_vcov.rds")),
                                                   cum=TRUE,cen=quan01_celcius,by=0.1)
 
-pred_road_reconstruct_pooled$allRRfit[951]
-pred_road_reconstruct_pooled$allRRlow[951]
-pred_road_reconstruct_pooled$allRRhigh[951]
+pred_road_reconstruct_pooled$allRRfit[991]
+pred_road_reconstruct_pooled$allRRlow[991]
+pred_road_reconstruct_pooled$allRRhigh[991]
 
 # Plotting
 col='gray'
@@ -266,7 +268,7 @@ col='gray'
   
   
   
-  # png("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Submission-LTPH/fig1.png", width = 7, height = 4, units = "in", res = 300)  # 8x8 inches, 300 DPI
+  png("/Volumes/TOSHIBA Kai/MS252/Figures/fig1.png", width = 7, height = 4, units = "in", res = 300)  # 8x8 inches, 300 DPI
   
   # Plotting
   col <- 'gray'
@@ -305,6 +307,6 @@ col='gray'
     abline(v = c(quan01_celcius, quan25_celcius, medT_celcius, quan75_celcius, quan99_celcius), lty = 4, col = "gray")
     mtext("d", side = 3, adj = -0.3, line = 1, cex = 1)  # Label 'd'
     
-    # dev.off()  # Close the device and save the file
+    dev.off()  # Close the device and save the file
     
     
