@@ -29,16 +29,16 @@ library(mice)
 
 # Define knot placement specifications (in percentiles)
 knot_specs <- list(
-  "knot_50" = c(50),
-  "knots_33_67" = c(33.3, 66.7),
-  "knots_25_75" = c(25, 75),
-  "knots_10_90" = c(10, 90),
-  "knots_25_50_75" = c(25, 50, 75),
-  "knots_10_50_90" = c(10, 50, 90)
+  "knot_50" = c(50)
+  # "knots_33_67" = c(33.3, 66.7),
+  # "knots_25_75" = c(25, 75)
+  # "knots_10_90" = c(10, 90),
+  # "knots_25_50_75" = c(25, 50, 75)
+  # "knots_10_50_90" = c(10, 50, 90)
 )
 
 # Base path and file list
-base_path <- "/Users/cheng-kaihsu/.../Derived Data_20240923_processed_by_imputation/"
+base_path <- "/Volumes/TOSHIBA Kai/MS252/Derived Data_20240923_processed_by_imputation/"
 road_files <- paste0("road", 1:100, ".csv")
 
 # Function to run analysis for one file and knot configuration
@@ -78,7 +78,8 @@ results <- list()
 for (knot_label in names(knot_specs)) {
   results[[knot_label]] <- lapply(road_files, function(f) {
     analyze_road_data(f, knot_specs[[knot_label]], knot_label)
-  })
+  }
+  )
 }
 
 # Rubin's rule function to pool estimates
@@ -98,7 +99,7 @@ apply_rubin_rule <- function(coef_list, vcov_list) {
 }
 
 # Save pooled results to disk
-path_for_pooled <- "/Users/cheng-kaihsu/.../Pooled results/sensitivity/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/sensitivity/"
 for (knot_label in names(results)) {
   coef_list <- lapply(results[[knot_label]], `[[`, "coef")
   vcov_list <- lapply(results[[knot_label]], `[[`, "vcov")
@@ -137,14 +138,14 @@ knotstmean <- quantile(data[[Temp_measure]], c(10, 75, 90) / 100, na.rm = TRUE)
 argvartmean <- list(fun = "ns", knots = knotstmean)
 cbt <- crossbasis(data[[Temp_measure]], lag = 2, argvar = argvartmean, 
                   arglag = list(knots = lagknots), group = data$salid1)
-path_main <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
+path_main <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
 main <- crosspred(cbt, model.link = "log",
                   coef = readRDS(paste0(path_main, "pooled_main_results_coef.rds")),
                   vcov = readRDS(paste0(path_main, "pooled_main_results_vcov.rds")),
                   cum = TRUE, cen = quan01, by = 0.1)
 
 # Path to sensitivity results
-path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/sensitivity/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/sensitivity/"
 
 # Define a list of knot configs and their labels
 knot_defs <- list(
@@ -179,7 +180,7 @@ panel_labels <- c(
 )
 
 # Save to file
-# png("/Users/cheng-kaihsu/.../figa1.png", width = 5, height = 6, units = "in", res = 300)
+png("/Volumes/TOSHIBA Kai/MS252/Figures/figs2.png", width = 6, height = 6, units = "in", res = 300)
 par(mfrow = c(4, 2), mar = c(4, 5, 4, 1.5), las = 1, mgp = c(3, 1, 0))
 
 col <- "gray"
@@ -200,4 +201,5 @@ col <- "gray"
   }
   
   # dev.off()
-
+  
+  
