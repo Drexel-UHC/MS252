@@ -88,13 +88,14 @@ pooled_male_results <- apply_rubin_rule(coef_male_list, vcov_male_list)
 pooled_female_results <- apply_rubin_rule(coef_female_list, vcov_female_list)
 
 # Save pooled estimates
-# path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
-# saveRDS(pooled_male_results$pooled_coef, paste0(path_for_pooled, "pooled_male_results_coef.rds"))
-# saveRDS(pooled_male_results$pooled_vcov, paste0(path_for_pooled, "pooled_male_results_vcov.rds"))
-# saveRDS(pooled_female_results$pooled_coef, paste0(path_for_pooled, "pooled_female_results_coef.rds"))
-# saveRDS(pooled_female_results$pooled_vcov, paste0(path_for_pooled, "pooled_female_results_vcov.rds"))
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
+saveRDS(pooled_male_results$pooled_coef, paste0(path_for_pooled, "pooled_male_results_coef.rds"))
+saveRDS(pooled_male_results$pooled_vcov, paste0(path_for_pooled, "pooled_male_results_vcov.rds"))
+saveRDS(pooled_female_results$pooled_coef, paste0(path_for_pooled, "pooled_female_results_coef.rds"))
+saveRDS(pooled_female_results$pooled_vcov, paste0(path_for_pooled, "pooled_female_results_vcov.rds"))
 
 # Reconstruct for plotting
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
 pred_male_pooled <- crosspred(cbt, model.link = "log",
                               coef = readRDS(paste0(path_for_pooled, "pooled_male_results_coef.rds")),
                               vcov = readRDS(paste0(path_for_pooled, "pooled_male_results_vcov.rds")),
@@ -131,9 +132,9 @@ legend("topleft", legend = c("male", "female"), col = col, lty = 2, lwd = 1,
        bty = "n", inset = 0, y.intersp = 0.8, cex = 1.0)
 
 # Inspect RR values
-pred_male_pooled$allRRfit[951]
-pred_male_pooled$allRRlow[951]
-pred_male_pooled$allRRhigh[951]
-pred_female_pooled$allRRfit[951]
-pred_female_pooled$allRRlow[951]
-pred_female_pooled$allRRhigh[951]
+pred_male_pooled$allRRfit[991]
+pred_male_pooled$allRRlow[991]
+pred_male_pooled$allRRhigh[991]
+pred_female_pooled$allRRfit[991]
+pred_female_pooled$allRRlow[991]
+pred_female_pooled$allRRhigh[991]
