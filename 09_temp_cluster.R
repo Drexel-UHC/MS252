@@ -95,7 +95,8 @@ for (i in 1:num_clusters) {
 }
 
 # Save the pooled coefficients to RDS files
-path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
+
 for (i in 1:num_clusters) {
   saveRDS(pooled_results[[i]]$pooled_coef, file = paste0(path_for_pooled, "pooled_results_cluster", i, "_coef.rds"))
   saveRDS(pooled_results[[i]]$pooled_vcov, file = paste0(path_for_pooled, "pooled_results_cluster", i, "_vcov.rds"))
@@ -105,7 +106,7 @@ for (i in 1:num_clusters) {
 num_clusters <- 6
 pred_reconstruct_pooled <- vector("list", num_clusters)
 for (i in 1:num_clusters) {
-  cluster_data <- read.csv("/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/Median-imputed/final_temp_cluster_subgroup.csv")
+  cluster_data <- read.csv("/Volumes/TOSHIBA Kai/MS252/Median-imputed/final_temp_cluster_subgroup.csv")
   cluster_data <- as.data.table(cluster_data)
   cluster_data <- cluster_data %>% filter(!grepl("^2020", `year_month`))
   cluster_data <- cluster_data[cluster_data[['cluster_ward_std_6']] %in% c(i)] 
