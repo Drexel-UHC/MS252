@@ -14,7 +14,7 @@
 ################################################################################
 
 # ---- Setup ----
-path_for_pooled <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/imputed/Pooled results/"
+path_for_pooled <- "/Volumes/TOSHIBA Kai/MS252/Pooled results/"
 modifiers <- c("mean", "std", "BECADSTTLGAVGL1AD", "BECURBAVGTRAFTIMEL1AD")
 
 # ---- Function: Analyze one imputed file with one modifier ----
