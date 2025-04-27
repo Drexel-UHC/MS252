@@ -4,7 +4,7 @@
 # and repeated the analysis as previously done, as a sensitivity analysis. 
 ################################################################################
 
-path_4 <- "/Users/cheng-kaihsu/Library/Mobile Documents/com~apple~CloudDocs/Berkeley/Fall 2023/SALURBAL/Data/MS252_impandnonimp_Sep24/Non-imputed_Nature Cities/Derived Data/"
+path_4 <- "/Volumes/TOSHIBA Kai/MS252/Non-imputed_Nature Cities/Derived Data/"
 
 # Get full file paths
 data_files_4 <- list.files(path_4, pattern = ".sas7bdat$", full.names = TRUE)
@@ -77,7 +77,7 @@ quan75_nonimp_road_deaths <- quantile(data_nonimp_road_deaths[[Temp_measure_noni
 quan99_nonimp_road_deaths <- quantile(data_nonimp_road_deaths[[Temp_measure_nonimp_road_deaths]], probs = 0.99, na.rm = TRUE)
 
 # Modeling
-lagknots_nonimp_road_deaths <- logknots(2, df = 3)
+lagknots_nonimp_road_deaths <- logknots(3, df = 3)
 knotstmean_nonimp_road_deaths <- quantile(data_nonimp_road_deaths[[Temp_measure_nonimp_road_deaths]], c(10,75,90)/100, na.rm=T)
 argvartmean_nonimp_road_deaths <- list(fun="ns", knots=knotstmean)
 cbt_nonimp_road_deaths <- crossbasis(data_nonimp_road_deaths[[Temp_measure_nonimp_road_deaths]], lag = 2, 
