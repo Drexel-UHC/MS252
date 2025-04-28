@@ -44,27 +44,27 @@ This repository contains the full modeling pipeline used for our multi-city time
 - Run Time: ~1 minutes on a standard desktop (8GB RAM).
 
 ## 📘 Instructions for Use (Full Pipeline)
-# Step 1: Data Preparation
+### Step 1: Data Preparation
 - Run 00_data wrangling_1.R
 - Run 01_data_wrangling_2.R
 
-# Step 2: Main Effects 
+### Step 2: Main Effects 
 - 02_median_imputation_main_effects.R
 - 03_rubin_imputation_main_effect.R
 
-# Step 3: Sensitivity Analyses
+### Step 3: Sensitivity Analyses
 - 04_sensitivity_knots.R
 - 11_non-imputation.R
 - 11a_sensitivity_outcome.R
 
-# Step 4: Stratification and interaction
+### Step 4: Stratification and interaction
 - 05_subgroup_sex.R
 - 06_subgroup_age.R
 - 07_subgroup_mode.R
 - 08_interaction.R
 - 09_temp_cluster.R
 
-# Step 5: Attributable Risk (EDF)
+### Step 5: Attributable Risk (EDF)
 - 10_EDF.R 
 
 
