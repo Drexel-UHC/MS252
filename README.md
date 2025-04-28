@@ -1,6 +1,6 @@
 # MS252: **"Effects of ambient temperature on road traffic mortality in Latin America: Individual- and city-level variations across 272 SALURBAL cities"**
 
-This repository contains the full modeling pipeline used for our multi-city time-stratified case-crossover analysis of ambient temperature and road-traffic deaths across 272 cities in Latin America. The workflow covers data processing, DLNM modeling, stratified and interaction analyses, pooled effect estimation using Rubin’s Rule, sensitivity checks, and calculation of Excess Death Fractions (EDF).
+This repository contains the full modeling pipeline used for our multi-city time-stratified case-crossover analysis of ambient temperature and road-traffic deaths across 272 cities in Latin America. The workflow covers data processing, DLNM modeling, stratified and interaction analyses, pooled effect estimation using Rubin’s Rule, sensitivity checks, and calculation of Excess Death Fractions (EDF). The code is licensed under the MIT License, allowing free use, modification, and distribution with proper attribution.
 ---
 
 ## 📁 Script Overview
