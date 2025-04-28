@@ -1,6 +1,6 @@
 # MS252: **"Effects of ambient temperature on road traffic mortality in Latin America: Individual- and city-level variations across 272 SALURBAL cities"**
 
-This repository contains the full modeling pipeline used for our multi-city time-series analysis of temperature and road-traffic deaths across 272 cities in Latin America. The pipeline includes data processing, stratified and interaction analyses, pooled effect estimation, and sensitivity checks.
+This repository contains the full modeling pipeline used for our multi-city time-stratified case-crossover analysis of ambient temperature and road-traffic deaths across 272 cities in Latin America. The pipeline includes data processing, stratified and interaction analyses, pooled effect estimation, and sensitivity checks.
 ---
 
 ## 📁 Script Overview
