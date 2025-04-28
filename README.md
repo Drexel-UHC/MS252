@@ -32,7 +32,6 @@ This repository contains the full modeling pipeline used for our multi-city time
 - macOS Sequoia 15.2
 
 ## ⚙️ Installation Guide
-⚙️ Installation Guide
 - Clone the repository.
 - Install required R packages, e.g., install.packages(c("data.table", "dlnm", "gnm")).
 - Update file paths in scripts: from "/Volumes/TOSHIBA Kai/MS252/..." to "your_project_folder"
