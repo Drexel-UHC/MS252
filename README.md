@@ -20,7 +20,7 @@ This repository contains the full modeling pipeline used for our multi-city time
 | `10_EDF.R` | Generates excess death fractions (EDF) plots for main and subgroup analyses. |
 | `11_non-imputation.R` | Runs non-imputed models as a sensitivity check and comparison against imputed results. |
 | `11a_sensitivity_outcome.R` | Compares effect estimates between imputed vs. non-imputed outcomes. |
-
+| `12_demo.R` | Simulates a lightweight simulated dataset (10 cities × 30 days × 50 imputations) to demonstrate core pipeline functions. |
 ---
 
 ## 💻 System Requirements
@@ -38,7 +38,7 @@ This repository contains the full modeling pipeline used for our multi-city time
 - Package installation: ~3–5 minutes.
 
 ## 🚀 Demo Instructions
-- Run 12_demo.R: simulates 5 cities × 60 days × 3 imputations.
+- Run 12_demo.R: simulates 10 cities × 30 days × 50 imputations.
 - It (1) runs DLNM main effect; (2) applies Rubin’s rule; (3) generates subgroup and interaction plots.
 - Expected Output: 3-panel plot including main effect, subgroup (e.g., male deaths), interaction (e.g., city-level mean temperature) results.
 - Run Time: ~1 minutes on a standard desktop (8GB RAM).
