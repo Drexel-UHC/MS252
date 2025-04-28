@@ -38,7 +38,7 @@ This repository contains the full modeling pipeline used for our multi-city time
 - Typical Install Time: R package installation: ~5–10 minutes
 
 ## 🚀 Demo Instructions
-- Run demo_run.R: simulates 5 cities × 60 days × 3 imputations.
+- Run 12_demo.R: simulates 5 cities × 60 days × 3 imputations.
 - It (1) runs DLNM main effect; (2) applies Rubin’s rule; (3) generates subgroup and interaction plots.
 - Expected Output: 3-panel plot including main effect, subgroup (e.g., male deaths), interaction (e.g., city-level mean temperature) results.
 - Run Time: ~1 minutes on a standard desktop (8GB RAM).
