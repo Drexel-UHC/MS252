@@ -32,10 +32,34 @@ This repository contains the full modeling pipeline used for our multi-city time
 - macOS Sequoia 15.2
 
 ## ⚙️ Installation Guide
-- Clone the repository.
-- Install required packages (e.g., install.packages(c("data.table", "dlnm", "gnm"))).
-- Update paths in scripts: Example of path needing adjustment: "/Volumes/TOSHIBA Kai/MS252/...". define base_path <- "your_project_folder"
-- Typical Install Time: R package installation: ~5–10 minutes
+⚙️ Installation Guide
+Clone the repository:
+
+bash
+Copy
+Edit
+git clone https://github.com/your-repo/MS252.git
+Install required R packages:
+
+r
+Copy
+Edit
+install.packages(c("data.table", "dlnm", "gnm", "ggplot2", 
+                   "patchwork", "lubridate", "haven", 
+                   "RColorBrewer", "tidyr"))
+Update file paths in scripts:
+Replace instances like:
+
+r
+Copy
+Edit
+"/Volumes/TOSHIBA Kai/MS252/..."
+with:
+
+r
+Copy
+Edit
+base_path <- "your_project_folder"
 
 ## 🚀 Demo Instructions
 - Run 12_demo.R: simulates 5 cities × 60 days × 3 imputations.
