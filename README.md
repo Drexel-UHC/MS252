@@ -33,33 +33,10 @@ This repository contains the full modeling pipeline used for our multi-city time
 
 ## ⚙️ Installation Guide
 ⚙️ Installation Guide
-Clone the repository:
-
-bash
-Copy
-Edit
-git clone https://github.com/your-repo/MS252.git
-Install required R packages:
-
-r
-Copy
-Edit
-install.packages(c("data.table", "dlnm", "gnm", "ggplot2", 
-                   "patchwork", "lubridate", "haven", 
-                   "RColorBrewer", "tidyr"))
-Update file paths in scripts:
-Replace instances like:
-
-r
-Copy
-Edit
-"/Volumes/TOSHIBA Kai/MS252/..."
-with:
-
-r
-Copy
-Edit
-base_path <- "your_project_folder"
+- Clone the repository.
+- Install required R packages, e.g., install.packages(c("data.table", "dlnm", "gnm")).
+- Update file paths in scripts: from "/Volumes/TOSHIBA Kai/MS252/..." to "your_project_folder"
+- Package installation: ~3–5 minutes.
 
 ## 🚀 Demo Instructions
 - Run 12_demo.R: simulates 5 cities × 60 days × 3 imputations.
