@@ -2,6 +2,7 @@
 **"Effects of ambient temperature on road traffic mortality in Latin America: Individual- and city-level variations across 272 SALURBAL cities"**
 
 This repository contains the full modeling pipeline used for our multi-city time-series analysis of temperature and road-traffic deaths across 272 cities in Latin America. The pipeline includes data processing, stratified and interaction analyses, pooled effect estimation, and sensitivity checks.
+---
 
 ## 📁 Script Overview
 
@@ -21,126 +22,50 @@ This repository contains the full modeling pipeline used for our multi-city time
 | `11_non-imputation.R` | Runs non-imputed models as a sensitivity check and comparison against imputed results. |
 | `11a_sensitivity_outcome.R` | Compares effect estimates between imputed vs. non-imputed outcomes. |
 
-💻 System Requirements
-Software:
-R version ≥ 4.2.0 (tested with 4.2.2 and 4.3.1)
+---
 
-Operating Systems tested:
+## 💻 System Requirements
 
-macOS Monterey & Ventura
+### **Software**
+- **R version** ≥ 4.2.0 (tested with 4.3.1)
 
-Linux (Ubuntu 22.04)
+### **Operating Systems Tested**
+- macOS Sequoia 15.2
 
-Windows-compatible with minor path edits
+## ⚙️ Installation Guide
+- Clone the repository.
+- Install required packages (e.g., install.packages(c("data.table", "dlnm", "gnm"))).
+- Update paths in scripts: Example of path needing adjustment: "/Volumes/TOSHIBA Kai/MS252/...". define base_path <- "your_project_folder"
+- Typical Install Time: R package installation: ~5–10 minutes
 
-Required R Packages:
-r
-Copy
-Edit
-install.packages(c("data.table", "dlnm", "gnm", "ggplot2", "patchwork",
-                   "lubridate", "haven", "RColorBrewer", "tidyr"))
-Hardware:
-Recommended: ≥16GB RAM for running all 100 imputation datasets efficiently
+## 🚀 Demo Instructions
+- Run demo_run.R: simulates 5 cities × 60 days × 3 imputations.
+- It (1) runs DLNM main effect; (2) applies Rubin’s rule; (3) generates subgroup and interaction plots.
+- Expected Output: 3-panel plot including main effect, subgroup (e.g., male deaths), interaction (e.g., city-level mean temperature) results.
+- Run Time: ~1 minutes on a standard desktop (8GB RAM).
 
-No non-standard hardware required
+## 📘 Instructions for Use (Full Pipeline)
+# Step 1: Data Preparation
+- Run 00_data wrangling_1.R
+- Run 01_data_wrangling_2.R
 
-⚙️ Installation Guide
-Clone the repository:
+# Step 2: Main Effects 
+- 02_median_imputation_main_effects.R
+- 03_rubin_imputation_main_effect.R
 
-bash
-Copy
-Edit
-git clone https://github.com/Drexel-UHC/MS252.git
-Open R or RStudio and set the working directory:
+# Step 3: Sensitivity Analyses
+- 04_sensitivity_knots.R
+- 11_non-imputation.R
+- 11a_sensitivity_outcome.R
 
-r
-Copy
-Edit
-setwd("path/to/MS252")
-Install all required packages (see above).
+# Step 4: Stratification and interaction
+- 05_subgroup_sex.R
+- 06_subgroup_age.R
+- 07_subgroup_mode.R
+- 08_interaction.R
+- 09_temp_cluster.R
 
-Update paths in scripts that reference:
+# Step 5: Attributable Risk (EDF)
+- 10_EDF.R 
 
-r
-Copy
-Edit
-/Volumes/TOSHIBA Kai/MS252/...
-Tip: Use here::here() or define a base_path <- "your_project_folder" to simplify.
-
-⏱️ Typical install time:
-R package setup: ~5–10 minutes on stable internet
-
-File download time varies by size (raw mortality + imputation files not stored in repo)
-
-🚀 Demo Instructions (Optional)
-To test the pipeline structure on a lightweight dataset:
-
-Use demo_run.R (or similar script) to:
-
-Simulate 5 cities × 60 days × 3 imputations
-
-Run DLNM main effect
-
-Perform Rubin’s rule pooling
-
-Generate subgroup and interaction plots
-
-Expected output:
-
-3-panel plot of:
-
-Main effect
-
-Subgroup (e.g., male deaths)
-
-Interaction (e.g., city-level mean temp)
-
-⏱️ Run time: ~1–2 minutes on standard desktop (8GB RAM)
-
-📘 Instructions for Use (Full Pipeline)
-Step 1: Data Preparation
-Run 00_data wrangling_1.R → processes .sas7bdat files
-
-Run 01_data_wrangling_2.R → aggregates into imputation-level datasets
-
-Step 2: Main Effects & Stratification
-Run 02_median_imputation_main_effects.R for median imputation results
-
-Run 03_rubin_imputation_main_effect.R for pooled main effects
-
-Subgroup Analyses:
-Sex: 05_subgroup_sex.R
-
-Age: 06_subgroup_age.R
-
-Mode: 07_subgroup_mode.R
-
-Step 3: Sensitivity Analyses
-Knot placement: 04_sensitivity_knots.R
-
-Non-imputed data: 11_non-imputation.R + 11a_sensitivity_outcome.R
-
-Step 4: Interaction Effects
-Model: 08_interaction.R
-
-Plot: 08a_interaction_plot.R
-
-Formal tests via ANOVA or pooled coefficient inference
-
-Step 5: Temperature Cluster Modeling
-Modeling: 09_temp_cluster.R
-
-Plotting: 09a_cluster_plotting.R
-
-Step 6: Attributable Risk (EDF)
-EDF estimation: 10_EDF.R (includes subgroups + simulation-based CI)
-
-🔁 Reproducibility
-All modeling scripts are modular and reproducible across systems with R ≥ 4.2.0.
-
-All model coefficients, variance-covariance matrices, and prediction objects are saved in .rds format.
-
-Outputs are version-controlled by file name and stored in clearly labeled subfolders:
-
-Derived Data/, Figures/, Pooled results/, Median-imputed/
 
