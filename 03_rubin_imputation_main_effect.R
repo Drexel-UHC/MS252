@@ -161,8 +161,8 @@ apply_rubin_rule <- function(coef_list, vcov_list) {
   
   # Calculate the between-imputation variance-covariance matrix
   var_between <- Reduce("+", lapply(1:M, function(m) {
-    (coef_list[[m]] - mean_coef) %*% t(coef_list[[m]] - mean_coef) / (M - 1)
-  })) / M
+    (coef_list[[m]] - mean_coef) %*% t(coef_list[[m]] - mean_coef) 
+  })) / (M - 1)
   
   # Calculate the pooled variance-covariance matrix
   total_vcov <- var_within + (1 + 1/M) * var_between
