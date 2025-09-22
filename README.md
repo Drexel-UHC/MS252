@@ -67,4 +67,13 @@ This repository contains the full modeling pipeline used for our multi-city time
 ### Step 5: Attributable Risk (EDF)
 - 10_EDF.R 
 
+🔔 Update Notice
 
+September 22, 2025
+A correction was made to the implementation of Rubin’s Rule.
+
+Issue: In the earlier version, the between-imputation variance was inadvertently divided twice, leading to underestimated standard errors.
+
+Correction: The code has been updated to correctly divide only once by (M − 1) when computing the between-imputation variance.
+
+Impact: Point estimates remain unchanged (due to rounding at the second decimal place in the published paper), but confidence intervals are now slightly wider.
