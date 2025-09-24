@@ -69,8 +69,8 @@ This repository contains the full modeling pipeline used for our multi-city time
 
 ## 🔔 Update Notice
 
-- September 22, 2025
+- September 24, 2025
 - A correction was made to the implementation of Rubin’s Rule.
 - Issue: In the earlier version, the between-imputation variance was inadvertently divided twice, leading to underestimated standard errors.
 - Correction: The code has been updated to correctly divide only once by (M − 1) when computing the between-imputation variance.
-- Impact: Point estimates remain unchanged (due to rounding at the second decimal place in the published paper), but confidence intervals are now slightly wider.
+- Impact: The correction leads to marginally wider confidence interval estimates in Table 2, with changes limited to the second decimal place (mostly ±0.01, a few ±0.02). Importantly, point estimates remain identical. All conclusions and interpretations remain unchanged.
